@@ -1,56 +1,20 @@
-# cloud Project
+# Isdp cloud 开发框架 
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+本开发框架不追求大而全，只追求好用能用，全面拥抱quarkus项目<https://quarkus.io/> 
 
-## Running the application in dev mode
+## 项目结构
+    -----core 核心包，主要是存储变量等内容
+    -----common 暂时没用
+    -----file 提供文件上传下载功能
+    -----web-reactive 拥抱反应式编程，提供基础的CRUD操作模式
+    -----eip 企业信息平台，提供安全、机构、区域等最基础的功能
 
-You can run your application in dev mode that enables live coding using:
-```shell script
-./mvnw compile quarkus:dev
-```
-
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
-
-## Packaging and running the application
-
-The application can be packaged using:
-```shell script
-./mvnw package
-```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using: 
-```shell script
-./mvnw package -Pnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/cloud-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
-
-## Provided Code
-
-### RESTEasy Reactive
-
-Easily start your Reactive RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+## 短期目标
+    1、activeRecord模式
+    2、eip 租户设计
+    3、eip组织机构设计
+    4、eip员工、岗位、组织、用户关系
+    5、提供员工入职，离职，离岗，调岗等关键流程设计
+    7、提供前端UI
+    8、提供定时任务
