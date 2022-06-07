@@ -28,6 +28,7 @@ public abstract class ReactiveCrudBaseService<Entity, Id> {
 
     @ReactiveTransactional
     public Uni<Entity> insert(Entity entity) {
+    
        return getRepository().persist(entity);
 
     }

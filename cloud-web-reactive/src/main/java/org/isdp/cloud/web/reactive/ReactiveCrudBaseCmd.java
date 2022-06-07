@@ -3,6 +3,7 @@ package org.isdp.cloud.web.reactive;
 import io.quarkus.hibernate.reactive.panache.PanacheQuery;
 import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Parameters;
 import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
@@ -10,16 +11,13 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.hibernate.reactive.mutiny.Mutiny;
 import org.isdp.cloud.web.reactive.terms.PagerTerms;
-import org.isdp.cloud.core.result.ResultBuilder;
 import org.isdp.cloud.web.reactive.web.IsdpPager;
 import org.isdp.cloud.web.reactive.web.IsdpResponse;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
 
@@ -40,19 +38,11 @@ public abstract class ReactiveCrudBaseCmd<Entity, Id> {
     @Path("_insert")
     @Operation(summary = "新增",
             description = "新增操作，不判断是否已存在！")
-    @Transactional
-    public Uni<Response> insert(@Valid Entity entity) {
-//        new Result("Book is valid! It was validated by service method validation.");
-        return getCrudBaseService().insert(entity).onItem().transform(entity1 -> {
-            return Response.status(200).entity(ResultBuilder.aResult()
-                    .withData("新增成功！")
-                    .withSuccess(true)
-                    .withErrorCode("200")
-                    .withTraceId("1")
-                    .withErrorMessage("success!")
-                    .withShowType("0")
-                    .build()).build();
-        });
+    @ReactiveTransactional
+    public Uni<IsdpResponse> insert(@Valid Entity entity) {
+        return getCrudBaseService().insert(entity)
+                .onItem().ifNotNull().transform(entity1-> IsdpResponse.OK(entity))
+                .onFailure().invoke(throwable -> IsdpResponse.error("1000", throwable.getMessage()));
 
     }
 
@@ -116,22 +106,20 @@ public abstract class ReactiveCrudBaseCmd<Entity, Id> {
     }
 
     @PUT
-    @Path("{id}")
-    @Operation(summary = "根据ID修改数据")
-    public Uni<IsdpResponse> update( @PathParam("id") Id id, @RequestBody  Entity e) {
+    @Operation(summary = "修改数据，需要传入的Entity必须包含id")
+    @ReactiveTransactional
+    public Uni<IsdpResponse> update(@RequestBody  Entity e) {
         if (e == null) throw new WebApplicationException("Entity must be not null", 422);
-        return sf.withTransaction((s, t) ->
-                        s.find(e.getClass(), id)
-// If entity exists then update it
-                                // todo 这里是实际的修改部分
-//                                .onItem().ifNotNull().invoke(entity -> "entity.(pubUserEntity.getNickname())")
-                                .onItem().ifNotNull().transform(entity -> IsdpResponse.OK(entity))
-// If entity not found return the appropriate response
-                                .onItem().ifNull()
-                                .continueWith(() -> IsdpResponse.OK(""))
-        );
+        return sf.withTransaction((session,tx) -> session.merge(e))
+                .onItem().transform(entity -> IsdpResponse.OK(entity));
     }
-
+//    @PUT
+//    @Path("{id}")
+//    @Operation(summary = "根据ID修改数据,传入需要修改的值，该方法只支持具体字段的修改，前台需要传入修改参数及修改值")
+//    @ReactiveTransactional
+//    public Uni<Entity> update(@PathParam("id")Id id, @RequestBody Parameters) {
+//        return getCrudBaseService().update()
+//    }
     @DELETE
     @Operation(summary = "根据ID删除数据")
     @APIResponse(
@@ -142,7 +130,6 @@ public abstract class ReactiveCrudBaseCmd<Entity, Id> {
     public Uni<Object> delete(@Parameter(name = "id", required = true) @PathParam("id") Id id) {
 
         return getCrudBaseService().findById(id)
-
                 .onItem().ifNotNull().invoke(entity -> getCrudBaseService().delete(entity))
                 .onItem().ifNull().fail().replaceWith(() -> IsdpResponse.OK(id + " is not exist!"))
                 .replaceWith(() -> IsdpResponse.OK(""));

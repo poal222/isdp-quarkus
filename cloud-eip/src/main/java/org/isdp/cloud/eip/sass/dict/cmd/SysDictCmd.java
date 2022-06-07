@@ -17,13 +17,13 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "sysdict", description = "系统字典")
-public class SysDictCmd extends ReactiveCrudBaseCmd<SysDict, Long> {
+public class SysDictCmd extends ReactiveCrudBaseCmd<SysDict, String> {
 
     @Inject
     SysDictService sysDictService;
 
     @Override
-    public ReactiveCrudBaseService<SysDict, Long> getCrudBaseService() {
+    public ReactiveCrudBaseService<SysDict, String> getCrudBaseService() {
         return sysDictService;
     }
 

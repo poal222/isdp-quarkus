@@ -1,8 +1,15 @@
 package org.isdp.cloud.web.reactive.web;
 
+import io.vertx.core.http.HttpServerRequest;
+import org.isdp.cloud.web.reactive.error.ErrorCodes;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+
+import javax.inject.Inject;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * 
@@ -36,6 +43,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class IsdpResponse {
 
+
     private Boolean success;
     private Object data;
     private String errorCode;
@@ -60,6 +68,20 @@ public class IsdpResponse {
      */
     public static IsdpResponse error(String errorCode,String errorMessage) {
         return  builder().success(false).errorCode(errorCode).errorMessage(errorMessage).host("001").showType(2).traceId("someid").build();
+
+    }
+    
+    /**
+     * notfound
+     * 
+     * @param data
+     * @return
+     */
+    public static IsdpResponse notFound(String errorMessage) {
+        return builder().success(true).errorCode(String.valueOf(
+                ErrorCodes.ERR_RESOURCE_NOT_FOUND) )
+                .errorMessage(errorMessage)
+                .host("001").showType(2).traceId("someid").build();
 
     }
 }

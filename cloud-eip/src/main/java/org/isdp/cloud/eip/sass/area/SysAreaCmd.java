@@ -13,7 +13,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 @Path("/area")
-@Tag(name = "eip", description = "区域管理")
+@Tag(name = "area", description = "区域管理")
 //@Authenticated
 public class SysAreaCmd extends ReactiveCrudBaseCmd<SysAreaEntity,String> {
 

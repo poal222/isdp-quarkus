@@ -6,5 +6,5 @@ import org.isdp.cloud.web.reactive.ReactiveBaseDao;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class SysDictDao extends ReactiveBaseDao<SysDict, Long> {
+public class SysDictDao extends ReactiveBaseDao<SysDict, String> {
 }

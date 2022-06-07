@@ -13,14 +13,14 @@ import javax.inject.Inject;
  * @author 王岗
  */
 @ApplicationScoped
-public class SysDictService extends ReactiveCrudBaseService<SysDict, Long> {
+public class SysDictService extends ReactiveCrudBaseService<SysDict, String> {
 
     @Inject
     SysDictDao sysDictDao;
 
 
     @Override
-    public ReactiveBaseDao<SysDict, Long> getRepository() {
+    public ReactiveBaseDao<SysDict, String> getRepository() {
         return sysDictDao;
     }
 }
