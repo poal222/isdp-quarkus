@@ -5,6 +5,8 @@ package org.isdp.cloud.eip.sass.tenant;
 
 import javax.persistence.*;
 
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 
 import java.io.Serializable;
@@ -12,11 +14,13 @@ import java.util.Date;
 
 @Entity
 @Table(name="pub_tenant")
+@Schema(name = "租户表")
 public class PubTenantEntity {
     /** 主键 */
     @Id
     @GeneratedValue
     @Column(name = "id")
+    @Schema(description = "id")
     private String id ;
     /** 是否默认租户1:是;0:否 */
     @Column(name = "default_tenant")

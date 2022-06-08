@@ -3,8 +3,6 @@ package org.isdp.cloud.eip.sass.tenant;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import org.isdp.cloud.eip.sass.area.SysAreaEntity;
-import org.isdp.cloud.eip.sass.area.SysAreaService;
 import org.isdp.cloud.web.reactive.ReactiveCrudBaseCmd;
 import org.isdp.cloud.web.reactive.ReactiveCrudBaseService;
 import org.jboss.resteasy.reactive.NoCache;

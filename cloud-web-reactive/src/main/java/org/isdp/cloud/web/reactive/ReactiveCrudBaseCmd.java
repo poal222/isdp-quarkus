@@ -85,7 +85,7 @@ public abstract class ReactiveCrudBaseCmd<Entity, Id> {
      * @return
      */
     @POST
-    @Path("findAll")
+    @Path("/_findAll")
     @ReactiveTransactional
     public Uni<IsdpResponse> findAll() {
 //        List<Entity> list = getCrudBaseService().findAll().list();
