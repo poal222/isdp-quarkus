@@ -10,6 +10,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import java.sql.Timestamp;
 
 import lombok.Data;
+import org.isdp.cloud.web.reactive.base.BaseEntity;
 
 /**
  * @author : http://www.chiner.pro
@@ -29,13 +30,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PubConfig {
-    /** 主键 */
-    @Id
-    @GeneratedValue
-    @Schema( description = "主键" )
-    @Column(name = "id")
-    private String id ;
+public class PubConfig extends BaseEntity {
+
     /** 参数建名 */
     @Schema( description = "参数建名" )
     @Column(name = "config_key")
@@ -64,18 +60,12 @@ public class PubConfig {
     @Schema( description = "创建者" )
     @Column(name = "create_by")
     private String createBy ;
-    /** 创建时间 */
-    @Schema( description = "创建时间" )
-    @Column(name = "create_date")
-    private Timestamp createDate ;
+
     /** 更新者 */
     @Schema( description = "更新者" )
     @Column(name = "update_by")
     private String updateBy ;
-    /** 更新时间 */
-    @Schema( description = "更新时间" )
-    @Column(name = "update_date")
-    private Timestamp updateDate ;
+
     /** 删除标记0:保留;1:删除 */
     @Schema( description = "删除标记0:保留" )
     @Column(name = "del_flag")

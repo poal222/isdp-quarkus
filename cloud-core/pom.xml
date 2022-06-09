@@ -28,5 +28,12 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-hibernate-validator</artifactId>
         </dependency>
+<!--        The Quarkus Logging Manager Extension provides you endpoints to visualize and manage the log level of your loggers.-->
+        <dependency>
+            <groupId>io.quarkiverse.loggingmanager</groupId>
+            <artifactId>quarkus-logging-manager</artifactId>
+            <version>${logger-manager.version}</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 </project>

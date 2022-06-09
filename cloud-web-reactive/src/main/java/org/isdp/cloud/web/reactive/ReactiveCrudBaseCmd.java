@@ -6,6 +6,8 @@ import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Parameters;
 import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -17,12 +19,15 @@ import org.isdp.cloud.web.reactive.web.IsdpResponse;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
+
+@Produces(APPLICATION_JSON)
+@Consumes(APPLICATION_JSON)
 public abstract class ReactiveCrudBaseCmd<Entity, Id> {
 
     public abstract ReactiveCrudBaseService<Entity, Id> getCrudBaseService();
@@ -38,6 +43,11 @@ public abstract class ReactiveCrudBaseCmd<Entity, Id> {
     @Path("_insert")
     @Operation(summary = "新增",
             description = "新增操作，不判断是否已存在！")
+    @APIResponse(
+            responseCode = "200",
+            description = "新增操作，不判断是否已存在！",
+            content = @Content(mediaType = APPLICATION_JSON)
+    )
     @ReactiveTransactional
     public Uni<IsdpResponse> insert(@Valid Entity entity) {
         return getCrudBaseService().insert(entity)
