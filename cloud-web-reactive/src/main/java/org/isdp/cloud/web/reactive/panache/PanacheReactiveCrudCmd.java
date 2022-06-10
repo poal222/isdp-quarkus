@@ -45,10 +45,8 @@
 //    @Path("/_findAll")
 //    @ReactiveTransactional
 //    public Uni<IsdpResponse> queryAll() {
-//        System.out.println(getEntity());
 //        return
-//                getEntity()..onItem()
-//                .ifNotNull().transform(entities -> IsdpResponse.OK(entities));
+//               Panache.withTransaction(getEntity()::persist).map(panacheEntityBase -> IsdpResponse.OK(panacheEntityBase));
 //    }
 //
 //    /**
@@ -60,6 +58,7 @@
 //    @Path("_queryPager")
 //    @ReactiveTransactional
 //    public Uni<IsdpResponse> queryPager(@RequestBody PagerTerms pagerTerms) {
+//
 //
 //        int size = (int) pagerTerms.getSize();
 //        int index = (int) pagerTerms.getIndex();

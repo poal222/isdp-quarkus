@@ -28,10 +28,6 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-oidc</artifactId>
         </dependency>
-        <!-- Reactive SQL client for PostgreSQL -->
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-reactive-pg-client</artifactId>
-        </dependency>
+
     </dependencies>
 </project>

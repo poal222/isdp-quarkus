@@ -5,6 +5,7 @@ import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.isdp.cloud.web.reactive.ReactiveCrudBaseCmd;
 import org.isdp.cloud.web.reactive.ReactiveCrudBaseService;
+import org.isdp.cloud.web.reactive.database.IsdpDbProvider;
 import org.jboss.resteasy.reactive.NoCache;
 
 
@@ -25,6 +26,7 @@ public class SysAreaCmd extends ReactiveCrudBaseCmd<SysAreaEntity,String> {
     @NoCache
     public Uni<User> me() {
         return  Uni.createFrom().item(new User(securityIdentity));
+
     }
 
     public static class User {
