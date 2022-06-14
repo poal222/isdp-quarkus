@@ -1,4 +1,4 @@
-package org.isdp.cloud.eip.sass.organStru.pubpost;
+package org.isdp.cloud.eip.sass.organStru.pubPost;
 import io.quarkus.security.identity.SecurityIdentity;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.isdp.cloud.web.reactive.ReactiveCrudBaseCmd;

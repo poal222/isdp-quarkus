@@ -1,4 +1,4 @@
-package org.isdp.cloud.eip.sass.organStru.pubpost;
+package org.isdp.cloud.eip.sass.organStru.pubPost;
 
 import org.isdp.cloud.web.reactive.ReactiveBaseDao;
 import org.isdp.cloud.web.reactive.ReactiveCrudBaseService;

@@ -1,9 +1,9 @@
-package org.isdp.cloud.eip.sass.organStru.pubpost;
+package org.isdp.cloud.eip.sass.PubLog;
 
 import org.isdp.cloud.web.reactive.ReactiveBaseDao;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class PubPostDao  extends ReactiveBaseDao<PubPostEntity, String> {
+public class PubLogDao  extends ReactiveBaseDao<PubLogEntity, String> {
 
 }

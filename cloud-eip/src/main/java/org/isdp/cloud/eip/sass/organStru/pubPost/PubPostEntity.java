@@ -1,10 +1,7 @@
-package org.isdp.cloud.eip.sass.organStru.pubpost;
+package org.isdp.cloud.eip.sass.organStru.pubPost;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
-import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
+
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import lombok.Data;
 import org.isdp.cloud.web.reactive.base.BaseEntity;

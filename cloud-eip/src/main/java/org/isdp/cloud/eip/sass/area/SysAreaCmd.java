@@ -3,9 +3,9 @@ package org.isdp.cloud.eip.sass.area;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.isdp.cloud.eip.sass.logging.Logged;
 import org.isdp.cloud.web.reactive.ReactiveCrudBaseCmd;
 import org.isdp.cloud.web.reactive.ReactiveCrudBaseService;
-import org.isdp.cloud.web.reactive.database.IsdpDbProvider;
 import org.jboss.resteasy.reactive.NoCache;
 
 
@@ -24,6 +24,7 @@ public class SysAreaCmd extends ReactiveCrudBaseCmd<SysAreaEntity,String> {
     @GET
     @Path("/me")
     @NoCache
+    @Logged
     public Uni<User> me() {
         return  Uni.createFrom().item(new User(securityIdentity));
 
