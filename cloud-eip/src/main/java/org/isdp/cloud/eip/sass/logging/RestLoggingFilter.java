@@ -1,21 +1,27 @@
 package org.isdp.cloud.eip.sass.logging;
 
-import io.quarkus.hibernate.reactive.panache.Panache;
 import io.quarkus.logging.Log;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.mutiny.pgclient.PgPool;
-import io.vertx.mutiny.sqlclient.Tuple;
+import io.vertx.sqlclient.templates.RowMapper;
+import io.vertx.sqlclient.templates.SqlTemplate;
+import io.vertx.sqlclient.templates.TupleMapper;
 import lombok.SneakyThrows;
 import org.isdp.cloud.eip.sass.PubLog.PubLogEntity;
 import org.isdp.cloud.eip.sass.PubLog.PubLogService;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
+import javax.persistence.Column;
 import javax.ws.rs.container.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -96,9 +102,36 @@ public class RestLoggingFilter implements ContainerRequestFilter , ContainerResp
 
 
         // todo 异步日志操作
-        Panache.withTransaction(()->pubLogService.insert(pubLogEntity))
-                .onFailure().invoke(throwable -> System.out.println(throwable))
-                .subscribe().with(rows -> System.out.println(rows));
+//        Panache.withTransaction(()->pubLogService.insert(pubLogEntity))
+//                .onFailure().invoke(throwable -> System.out.println(throwable))
+//                .subscribe().with(rows -> System.out.println(rows));
+
+//        pgPool.query("INSERT INTO public.pub_log\n" +
+//                "(id, \"type\", state, username, real_name, \"module\", operation, \"method\", client_ip, device_name, browser_name, user_agent, \n" +
+//                "request_uri, request_method, \"exception\", query_string, params, elapsed_time, tenant_id, org_id, create_by, create_date)\n" +
+//                "VALUES(#{id}, #{type}, #{state}, #{username}, #{real_name}, #{operation}, #{method}, #{client_ip},\n" +
+//                " #{device_name}, #{browser_name}, #{user_agent}, #{request_uri}, #{request_method}, #{exception}, #{query_string}, #{params}, #{elapsed_time}, \n" +
+//                " #{tenant_id}, #{org_id}, #{create_by}, CURRENT_TIMESTAMP);\n")
+//                .execute(Tuple.from(pubLogEntity.toString()))
+//                .subscribe();
+
+        
+        
+        SqlTemplate
+                .forUpdate(pgPool.getDelegate(), " insert\n" +
+                        " into\n" +
+                        "    pub_log\n" +
+                        "    (browser_name, client_ip, create_by, create_date, device_name, elapsed_time, exception, method, module, operation, org_id,\n" +
+                        "     params, query_string, real_name, request_method, request_uri, state, tenant_id, type, user_agent, username, id)\n" +
+                        "values\n" +
+                        "     (#{browser_name}, #{client_ip}, #{create_by}, #{create_date}, #{device_name}, #{elapsed_time}, #{exception}, #{method}, #{module}, #{operation}, #{org_id}1, #{params}2, \n" +
+                        "     #{query_string}, #{real_name}, #{request_method}, #{request_uri}, #{state}, #{tenant_id}, #{type}, #{user_agent}, #{username}, #{id})")
+                .mapFrom(requestLogEntityToMap(pubLogEntity))
+                .execute(pubLogEntity)
+                .onFailure(event -> event.printStackTrace())
+                .onSuccess(res -> {
+                    System.out.println("User inserted");
+                });
 //        pgPool.withTransaction(client -> client
 //                        .preparedQuery("SELECT  org_id, stru_view_id, stru_path, name,po.full_name \n" +
 //                                "FROM public.pub_stru ps, public.pub_org po \n" +
@@ -108,6 +141,23 @@ public class RestLoggingFilter implements ContainerRequestFilter , ContainerResp
 //                                "\n" +
 //                                "and ps.parent_id ='root'")
 //                        .execute()).subscribe().with(rows -> System.out.println(rows));
+    }
+
+    private TupleMapper<PubLogEntity> requestLogEntityToMap(PubLogEntity pubLogEntity) {
+
+       return  TupleMapper.mapper(pubLogEntity1 ->{
+           Map<String, Object> parameters = new HashMap<>();
+           Field[] fields =   PubLogEntity.class.getFields();
+
+           Arrays.stream(fields).forEach(field ->{
+                       Column column =         field.getAnnotation(Column.class);
+                       parameters.put(column.name(),field.getName());
+                       System.out.println(column);
+                   }
+           );
+           System.out.println(parameters);
+           return  parameters;
+       });
     }
 
     @Override
