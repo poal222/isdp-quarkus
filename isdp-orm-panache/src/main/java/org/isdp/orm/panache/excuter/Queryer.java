@@ -11,6 +11,7 @@ public  class Queryer {
      * 方言
      */
     private Dialect dialect;
+    
     public Queryer(Dialect dialect2) {
     }
     /**

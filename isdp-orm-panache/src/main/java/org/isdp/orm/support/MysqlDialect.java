@@ -15,8 +15,12 @@ public class MysqlDialect implements Dialect{
 
     @Override
     public String getLimited(int index, int offset) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getLimited'");
+        return " LIMIT "+index+" , "+ offset;
+    }
+
+    @Override
+    public String getKey() {
+        return "Mysql";
     }
     
 }
